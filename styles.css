@@ -1,0 +1,127 @@
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 100%;
+  background: #616161;
+}
+
+/* =============================================================================
+Form */
+
+#wrapper {
+  width: 640px;
+  background: #e0e0e0;
+  padding: 14px;
+  margin: 40px auto;
+  border-top: 5px solid #43a047;
+}
+
+h1 {
+	margin-top: 0;
+  color: #424242;
+}
+
+#status {
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
+.open {
+  color: #43a047;
+}
+
+.closed {
+  color: #e53935;
+}
+
+#connect-action {
+  float: right;
+}
+
+/* =============================================================================
+Message log */
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+ul li {
+  padding: 8px 12px;
+  border-bottom: 1px solid #bdbdbd;
+}
+
+ul li:first-child {
+  border-top: 1px solid #bdbdbd;
+}
+
+ul li span {
+  display: inline-block;
+  width: 90px;
+  font-weight: bold;
+  color: #757575;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.sent {
+  background-color: #FFF;
+  color: #1e88e5
+}
+
+.received {
+}
+
+/* =============================================================================
+Message composition area */
+
+#message-form {
+  margin-top: 18px;
+}
+
+textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #CCC;
+  min-height: 100px;
+  margin-bottom: 10px;
+}
+
+/* =============================================================================
+Buttons */
+
+button {
+  display: inline-block;
+  border: none;
+  font-size: 15px;
+  padding: 10px 14px;
+  color: white;
+  margin: 0 4px;
+  text-align: center;
+}
+
+button.connect {
+  background: #81c784;
+}
+
+button.disconnect {
+  background: #e57373;
+}
+
+button[type="submit"] {
+  background: #43a047;
+}
+
+button:hover {
+  opacity: 0.75;
+  cursor: pointer;
+}

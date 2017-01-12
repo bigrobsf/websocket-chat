@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hit Me Up</title>
+  <link rel='stylesheet' href='styles.css'>
+</head>
+<body>
+  <div id='wrapper'>
+    <h1>Hit Me Up</h1>
+
+    <div id='status'>Connecting...</div>
+
+    <ul id='message-log'></ul>
+
+    <form id='message-form' action='#' method='post'>
+      <textarea id='message-area' placeholder='Write your message here...' autofocus='true' required>
+      </textarea>
+      <button type='submit'>Send</button>
+      <div id='connect-action'>
+        <button type='button' class='connect' id='open'>Connect</button>
+        <button type='button' class='disconnect' id='close'>Disconnect</button>
+      </div>
+    </form>
+  </div>
+  
+  <script src='client.js'></script>
+</body>
+</html>

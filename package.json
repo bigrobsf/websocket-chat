@@ -1,0 +1,23 @@
+{
+  "name": "websocket-chat",
+  "version": "1.0.0",
+  "description": "self-guided exploration of creating a simple chat app using the HTML5 WebSocket API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bigrobsf/websocket-chat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bigrobsf/websocket-chat/issues"
+  },
+  "homepage": "https://github.com/bigrobsf/websocket-chat#readme",
+  "dependencies": {
+    "websocket": "^1.0.24"
+  }
+}
