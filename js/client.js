@@ -10,40 +10,21 @@ let socket = new WebSocket('ws://localhost:1234', 'sample-protocol');
 let clientID = createGUID();
 
 window.onload = () => {
-  let form = document.getElementById('message-form');
   let messageField = document.getElementById('message-area');
   let messagesList = document.getElementById('message-log');
   let socketStatus = document.getElementById('status');
+
   let closeBtn = document.getElementById('close');
   let openBtn = document.getElementById('open');
+  let sendBtn = document.getElementById('send');
 
   socket.onopen = (event) => {
     socketStatus.innerHTML = 'Connected.';
     socketStatus.className = 'open';
   };
 
-  openBtn.onclick = (event) => {
-    window.location.reload(true);
-  };
-
   socket.onerror = (error) => {
     console.log('WebSocket Error: ' + error);
-  };
-
-  form.onsubmit = (event) => {
-    event.preventDefault();
-
-    let message = messageField.value;
-    let msg = createMsgJSON(clientID, message);
-
-    socket.send(JSON.stringify(msg));
-
-    messagesList.innerHTML += '<li class="sent"><span>Sent: </span>' + message + '</li>';
-
-    messageField.value = '';
-    messageField.focus();
-
-    return false;
   };
 
   socket.onmessage = (event) => {
@@ -65,6 +46,10 @@ window.onload = () => {
     socketStatus.className = 'closed';
   };
 
+  openBtn.onclick = (event) => {
+    window.location.reload(true);
+  };
+
   closeBtn.onclick = (event) => {
     event.preventDefault();
 
@@ -72,22 +57,35 @@ window.onload = () => {
 
     return false;
   };
-};
 
-document.addEventListener('DOMContentLoaded', () => {
+  sendBtn.onclick = (event) => {
+    sendMessage();
+  };
+
   document.querySelector('#message-area').addEventListener('keypress', function (event) {
+    event.stopPropagation();
     if(event.keyCode === 13 && !event.shiftKey) {
-      let form = document.getElementById('message-form');
-      let e = new Event('submit');
-
-      form.dispatchEvent(e);
       event.preventDefault();
+
+      sendMessage();
 
       return false;
     }
   });
-});
 
+  function sendMessage() {
+    let message = messageField.value;
+    let msg = createMsgJSON(clientID, message);
 
+    socket.send(JSON.stringify(msg));
+
+    messagesList.innerHTML += '<li class="sent"><span>Sent: </span>' + message + '</li>';
+
+    messageField.value = '';
+    messageField.focus();
+
+    return false;
+  }
+};
 
 // end

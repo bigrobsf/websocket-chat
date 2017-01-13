@@ -8,7 +8,10 @@
 let http = require('http');
 let WebSocketServer = require('websocket').server;
 
-let server = http.createServer((request, response) => {});
+
+let server = http.createServer((request, response) => {
+  console.log(request.url);
+});
 let wsServer = new WebSocketServer({
   httpServer: server
 });
@@ -22,16 +25,13 @@ wsServer.on('request', (req) => {
 
   clients[id] = connection;
 
-
   console.log((new Date()) + ' Connection accepted [' + id + ']');
 
   connection.on('message', (message) => {
     let msgString = message.utf8Data;
-    let msgObj = JSON.parse(msgString);
-
-    // msgObj.reqKey = req.key;
-
-    msgString = JSON.stringify(msgObj);
+    // let msgObj = JSON.parse(msgString);
+    //
+    // msgString = JSON.stringify(msgObj);
 
     for (var key in clients) {
       clients[key].sendUTF(msgString);

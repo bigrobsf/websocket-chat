@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/bigrobsf/websocket-chat#readme",
   "dependencies": {
+    "morgan": "^1.7.0",
     "websocket": "^1.0.24"
   }
 }

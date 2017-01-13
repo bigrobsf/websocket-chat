@@ -18,7 +18,8 @@ Form */
   background: #e0e0e0;
   padding: 14px;
   margin: 40px auto;
-  border-top: 5px solid #43a047;
+  border-top: 5px solid #263238;
+  border-bottom: 5px solid #37474f;
 }
 
 h1 {
@@ -117,7 +118,7 @@ button.disconnect {
   background: #e57373;
 }
 
-button[type="submit"] {
+button.send {
   background: #43a047;
 }
 

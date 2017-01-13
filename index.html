@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Hit Me Up</title>
-  <link rel='stylesheet' href='styles.css'>
+  <link rel='stylesheet' href='css/styles.css'>
 </head>
 <body>
   <div id='wrapper'>
@@ -15,18 +15,18 @@
 
     <ul id='message-log'></ul>
 
-    <form id='message-form' action='#' method='post'>
+    <div id='message-form'>
       <textarea id='message-area' placeholder='Write your message here...' autofocus='true' required>
       </textarea>
-      <button type='submit'>Send</button>
+      <button type='button' class='send' id='send'>Send</button>
       <div id='connect-action'>
         <button type='button' class='connect' id='open'>Connect</button>
         <button type='button' class='disconnect' id='close'>Disconnect</button>
       </div>
-    </form>
+    </div>
   </div>
 
-  <script src='helpers.js'></script>
-  <script src='client.js'></script>
+  <script src='js/helpers.js'></script>
+  <script src='js/client.js'></script>
 </body>
 </html>

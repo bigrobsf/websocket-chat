@@ -21,7 +21,6 @@ function createMsgJSON(clientID, message) {
     type: 'message',
     text: message,
     clientKey: clientID,
-    // reqKey: '',
     date: Date.now()
   };
 
