@@ -17,7 +17,7 @@ let count = 0;
 let clients = {};
 
 wsServer.on('request', (req) => {
-  let connection = req.accept('echo-protocol', req.origin);
+  let connection = req.accept('sample-protocol', req.origin);
   let id = count++;
   clients[id] = connection;
 
@@ -25,6 +25,7 @@ wsServer.on('request', (req) => {
 
   connection.on('message', (message) => {
     let msgString = message.utf8Data;
+    console.log('server: ', msgString);
 
     for (var key in clients) {
       clients[key].sendUTF(msgString);

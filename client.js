@@ -3,10 +3,11 @@
 /* jshint node: true */
 /* jshint browser: true */
 /* jshint mocha: true */
-/* jshint jquery: true */
+
 'use strict';
 
-let socket = new WebSocket('ws://localhost:1234', 'echo-protocol');
+let socket = new WebSocket('ws://localhost:1234', 'sample-protocol');
+let clientID = createGUID();
 
 window.onload = () => {
   let form = document.getElementById('message-form');
@@ -31,21 +32,30 @@ window.onload = () => {
 
   form.onsubmit = (event) => {
     event.preventDefault();
+    
     let message = messageField.value;
+    let msg = createMsgJSON(clientID, message);
 
-    socket.send(message);
+    socket.send(JSON.stringify(msg));
 
     messagesList.innerHTML += '<li class="sent"><span>Sent: </span>' + message + '</li>';
-    messageField.value = '';
 
+    messageField.value = '';
     messageField.focus();
 
     return false;
   };
 
   socket.onmessage = (event) => {
-    let message = event.data;
-    messagesList.innerHTML += '<li class="received"><span>Received: </span>' + message + '</li>';
+    let messageField = document.getElementById('message-area').contentDocument;
+    let msg = JSON.parse(event.data);
+    let time = new Date(msg.date);
+    let timeStr = time.toLocaleTimeString();
+    console.log(msg.id);
+
+    if (msg.text.length) {
+      messagesList.innerHTML += '<li class="received"><span>Received: ' + timeStr + '</span>' + msg.text + '</li>';
+    }
   };
 
   socket.onclose = (event) => {
@@ -75,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
 
 
 // end
