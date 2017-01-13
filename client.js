@@ -32,7 +32,7 @@ window.onload = () => {
 
   form.onsubmit = (event) => {
     event.preventDefault();
-    
+
     let message = messageField.value;
     let msg = createMsgJSON(clientID, message);
 
@@ -49,11 +49,13 @@ window.onload = () => {
   socket.onmessage = (event) => {
     let messageField = document.getElementById('message-area').contentDocument;
     let msg = JSON.parse(event.data);
+
+    let clientKey = msg.clientKey;
     let time = new Date(msg.date);
     let timeStr = time.toLocaleTimeString();
-    console.log(msg.id);
 
-    if (msg.text.length) {
+
+    if (msg.text.length && msg.clientKey !== clientID) {
       messagesList.innerHTML += '<li class="received"><span>Received: ' + timeStr + '</span>' + msg.text + '</li>';
     }
   };

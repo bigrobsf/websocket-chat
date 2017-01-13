@@ -20,7 +20,8 @@ function createMsgJSON(clientID, message) {
   let msg = {
     type: 'message',
     text: message,
-    id: clientID,
+    clientKey: clientID,
+    // reqKey: '',
     date: Date.now()
   };
 

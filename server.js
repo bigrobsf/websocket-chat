@@ -19,13 +19,19 @@ let clients = {};
 wsServer.on('request', (req) => {
   let connection = req.accept('sample-protocol', req.origin);
   let id = count++;
+
   clients[id] = connection;
+
 
   console.log((new Date()) + ' Connection accepted [' + id + ']');
 
   connection.on('message', (message) => {
     let msgString = message.utf8Data;
-    console.log('server: ', msgString);
+    let msgObj = JSON.parse(msgString);
+
+    // msgObj.reqKey = req.key;
+
+    msgString = JSON.stringify(msgObj);
 
     for (var key in clients) {
       clients[key].sendUTF(msgString);
