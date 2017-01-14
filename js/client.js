@@ -6,8 +6,8 @@
 
 'use strict';
 
-let socket = new WebSocket('ws://localhost:1234', 'sample-protocol');
-let clientID = createGUID();
+let socket = new WebSocket('ws://localhost:3001', 'sample-protocol');
+let clientKey = '';
 
 window.onload = () => {
   let messageField = document.getElementById('message-area');
@@ -30,14 +30,22 @@ window.onload = () => {
   socket.onmessage = (event) => {
     let messageField = document.getElementById('message-area').contentDocument;
     let msg = JSON.parse(event.data);
+    console.log('client received: ', msg);
 
-    let clientKey = msg.clientKey;
     let time = new Date(msg.date);
     let timeStr = time.toLocaleTimeString();
 
-
-    if (msg.text.length && msg.clientKey !== clientID) {
-      messagesList.innerHTML += '<li class="received"><span>Received: ' + timeStr + '</span>' + msg.text + '</li>';
+    switch(msg.type) {
+      case 'id':
+        clientKey = msg.clientKey;
+        console.log('client key received: ', clientKey);
+        break;
+      case 'message':
+        messagesList.innerHTML += '<li class="received"><span>Received: ' +
+          timeStr + '</span>' + msg.text + '</li>';
+        break;
+      case 'confirmation':
+        break;
     }
   };
 
@@ -75,7 +83,7 @@ window.onload = () => {
 
   function sendMessage() {
     let message = messageField.value;
-    let msg = createMsgJSON(clientID, message);
+    let msg = createMsgObj(message, clientKey);
 
     socket.send(JSON.stringify(msg));
 
@@ -87,5 +95,34 @@ window.onload = () => {
     return false;
   }
 };
+
+// =============================================================================
+// consruct message object
+function createMsgObj(message, clientKey) {
+  let msg = {
+    type: 'message',
+    clientMsgId: createMsgId(),
+    text: message,
+    clientKey: clientKey,
+    date: Date.now()
+  };
+
+  return msg;
+}
+
+// =============================================================================
+// use closure to create and increment counter 
+function createMsgId() {
+  var counter = 0;
+  return function() {
+    return counter++;
+  };
+}
+
+
+
+
+
+
 
 // end
