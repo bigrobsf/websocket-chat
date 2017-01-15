@@ -13,6 +13,11 @@ html {
 /* =============================================================================
 Form */
 
+h1 {
+  margin-top: 0;
+  color: #424242;
+}
+
 #wrapper {
   width: 640px;
   background: #e0e0e0;
@@ -22,14 +27,13 @@ Form */
   border-bottom: 5px solid #37474f;
 }
 
-h1 {
-	margin-top: 0;
-  color: #424242;
-}
-
 #status {
   font-size: 15px;
   margin-bottom: 15px;
+}
+
+#connect-action {
+  float: right;
 }
 
 .open {
@@ -40,9 +44,6 @@ h1 {
   color: #e53935;
 }
 
-#connect-action {
-  float: right;
-}
 
 /* =============================================================================
 Message log */
@@ -84,10 +85,6 @@ ul li span {
 /* =============================================================================
 Message composition area */
 
-#message-form {
-  margin-top: 18px;
-}
-
 textarea {
   width: 100%;
   padding: 8px;
@@ -95,6 +92,10 @@ textarea {
   border: 1px solid #CCC;
   min-height: 100px;
   margin-bottom: 10px;
+}
+
+#message-form {
+  margin-top: 18px;
 }
 
 /* =============================================================================

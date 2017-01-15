@@ -18,6 +18,7 @@ window.onload = () => {
   let openBtn = document.getElementById('open');
   let sendBtn = document.getElementById('send');
 
+  // Request a connection to the server. This function executes once opened
   socket.onopen = (event) => {
     socketStatus.innerHTML = 'Connected.';
     socketStatus.className = 'open';
@@ -27,6 +28,8 @@ window.onload = () => {
     console.log('WebSocket Error: ' + error);
   };
 
+  // Listens for incoming data. When a message is received, the message
+  // event is sent to this function
   socket.onmessage = (event) => {
     let messageField = document.getElementById('message-area').contentDocument;
     let msg = JSON.parse(event.data);
@@ -38,7 +41,6 @@ window.onload = () => {
     switch(msg.type) {
       case 'id':
         clientKey = msg.clientKey;
-        console.log('client key received: ', clientKey);
         break;
       case 'message':
         messagesList.innerHTML += '<li class="received"><span>Received: ' +
@@ -83,14 +85,17 @@ window.onload = () => {
 
   function sendMessage() {
     let message = messageField.value;
-    let msg = createMsgObj(message, clientKey);
 
-    socket.send(JSON.stringify(msg));
+    if (message.length > 0) {
+      let msg = createMsgObj(message, clientKey);
 
-    messagesList.innerHTML += '<li class="sent"><span>Sent: </span>' + message + '</li>';
+      socket.send(JSON.stringify(msg));
+      messagesList.innerHTML += '<li class="sent"><span>Sent: </span>' +
+        message + '</li>';
 
-    messageField.value = '';
-    messageField.focus();
+      messageField.value = '';
+      messageField.focus();
+    }
 
     return false;
   }
@@ -101,23 +106,25 @@ window.onload = () => {
 function createMsgObj(message, clientKey) {
   let msg = {
     type: 'message',
-    clientMsgId: createMsgId(),
+    msgId: createMsgId(),
     text: message,
     clientKey: clientKey,
     date: Date.now()
   };
 
+  console.log(msg.msgId);
+
   return msg;
 }
 
 // =============================================================================
-// use closure to create and increment counter 
-function createMsgId() {
+// use closure to create and increment counter for message ID
+var createMsgId = (function() {
   var counter = 0;
   return function() {
     return counter++;
   };
-}
+})();
 
 
 
