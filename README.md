@@ -2,15 +2,14 @@
 self-guided exploration of creating a simple chat app using the HTML5 WebSocket API
 
 # HTML WebSockets: How to build a simple chat node.js application in JavaScript
-
 by Rob Conner
 
 
 # Prerequisite Skills:
 
-•	Beginner to Intermediate JavaScript, HTML, and optionally, CSS
-•	Node.js
-•	Terminal / command line
+*	Beginner to Intermediate JavaScript, HTML, and optionally, CSS
+*	Node.js
+*	Terminal / command line
 
 # Technology:
 
