@@ -2,19 +2,19 @@
 by Rob Conner
 
 
-# Prerequisite Skills:
+## Prerequisite Skills:
 
 *	Beginner to Intermediate JavaScript, HTML, and optionally, CSS
 *	Node.js
 *	Terminal / command line
 
-# Technology:
+## Technology:
 
 **Node.js** is an open-source, cross-platform JavaScript runtime environment for developing tools and applications. The runtime environment uses the Google V8 engine (built for Google Chrome) to interpret JavaScript. Node.js has an event-driven architecture that is non-blocking and supports asynchronous input/output. It seeks to optimize throughput and scalability. This makes it ideal for building web servers and real-time web applications such as chat apps and browser games.
 
 **WebSockets** is an API introduced with the HTML5 specification. The technology allows for a continuous bi-directional connection between a client and server. This makes it ideal for messaging / chat applications. The client is usually a user’s browser and thus the client-side is implemented using HTML and JavaScript. The server, however, can be implemented on any number of platforms though in this tutorial we will build the server using Node.js.
 
-# Tutorial:
+## Tutorial:
 
 **Introduction:** For many years, the web’s communication paradigm was that a client, usually a web browser, requested data from a server and the server responded to those requests. As the years passed, web applications matured, became more powerful and complex, and consumed more and more data. However, the existing HTTP model of client-initiated communication was limiting their usefulness and usability. Several work-arounds were developed, one of the most popular of which was long-polling.
 
@@ -38,7 +38,7 @@ So let’s make this happen! For this tutorial, assuming you already have a Java
 
 
 
-# Further Reading / Resources:
+## Further Reading / Resources:
 
 https://en.wikipedia.org/wiki/Node.js
 
