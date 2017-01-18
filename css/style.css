@@ -104,11 +104,13 @@ Buttons */
 button {
   display: inline-block;
   border: none;
-  font-size: 15px;
+  font-size: 12px;
+  font-weight: bold;
   padding: 10px 14px;
   color: white;
   margin: 0 4px;
   text-align: center;
+  text-transform: uppercase;
 }
 
 button.connect {
