@@ -25,52 +25,54 @@ window.onload = () => {
     socketStatus.className = 'open';
   };
 
+  // Listens for incoming data. When a message is received, the message
+  // event is sent to this function
+  socket.onmessage = (event) => {
+  //   let messageField = document.getElementById('message-area').contentDocument;
+    // let msg = JSON.parse(event.data);
+    let message = event.data; // remove later
+    messageList.innerHTML += '<li class="received"><span>Received: </span>' +
+                                message + '</li>';
+
+    // let time = new Date(msg.date);
+    // let timeStr = time.toLocaleTimeString();
+
+    // switch statement to easily add additional functions based on message type
+    // switch(msg.type) {
+    //   case 'id':
+    //     clientKey = msg.clientKey;
+    //     break;
+    //   case 'message':
+    //     messageList.innerHTML += '<li class="received"><span>Received: ' +
+    //       timeStr + '</span>' + msg.text + '</li>';
+    //     break;
+    // }
+  };
+
   // Handles errors. In this case it simply logs them
   socket.onerror = (error) => {
     console.log('WebSocket Error: ' + error);
   };
-//
-//   // Listens for incoming data. When a message is received, the message
-//   // event is sent to this function
-//   socket.onmessage = (event) => {
-//     let messageField = document.getElementById('message-area').contentDocument;
-//     let msg = JSON.parse(event.data);
-//     console.log('client received: ', msg);
-//
-//     let time = new Date(msg.date);
-//     let timeStr = time.toLocaleTimeString();
-//
-//     // switch statement to easily add additional functions based on message type
-//     switch(msg.type) {
-//       case 'id':
-//         clientKey = msg.clientKey;
-//         break;
-//       case 'message':
-//         messageList.innerHTML += '<li class="received"><span>Received: ' +
-//           timeStr + '</span>' + msg.text + '</li>';
-//         break;
-//     }
-//   };
-//
-//   // Set connection status on form to Disconnected
-//   socket.onclose = (event) => {
-//     socketStatus.innerHTML = 'Disconnected from WebSocket.';
-//     socketStatus.className = 'closed';
-//   };
-//
-//   // Close the WebSocket connection when the Disconnect button is clicked
-//   closeBtn.onclick = (event) => {
-//     event.preventDefault();
-//
-//     socket.close();
-//
-//     return false;
-//   };
 
-//   // Reload the browser window when the Connect button is clicked
-//   openBtn.onclick = (event) => {
-//     window.location.reload(true);
-//   };
+  // Set connection status on form to Disconnected
+  socket.onclose = (event) => {
+    socketStatus.innerHTML = 'Disconnected from WebSocket.';
+    socketStatus.className = 'closed';
+  };
+
+  // Close the WebSocket connection when the Disconnect button is clicked
+  closeBtn.onclick = (event) => {
+    event.preventDefault();
+
+    socket.close();
+
+    return false;
+  };
+
+  // Reload the browser window when the Connect button is clicked
+  openBtn.onclick = (event) => {
+    window.location.reload(true);
+  };
 
   // Calls the sendMessage function if the send button is clicked
   sendBtn.onclick = (event) => {

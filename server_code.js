@@ -22,7 +22,6 @@ let count = 0;
 // listens for connection requests and stores the client info
 wsServer.on('request', (req) => {
   let connection = req.accept('sample-protocol', req.origin);
-
   let id = count++;
 
   clients[id] = connection;

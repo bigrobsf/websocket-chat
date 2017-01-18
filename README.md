@@ -4,15 +4,16 @@ by Rob Conner
 
 ## Prerequisite Skills
 
-*	Beginner to Intermediate JavaScript, HTML, and optionally, CSS
+*	Beginner to Intermediate JavaScript
+* Some knowledge of HTML and CSS is helpful
 *	Node.js
-*	Terminal / command line
+*	Familiarity using a command line interface
 
 ## Development Environment
 
 You'll need:
 
-* A text editor (for example, Atom or Sublime Text)
+* A code-friendly text editor (for example, Atom or Sublime Text)
 * Node.js
 * A compatible browser. This has been tested on recent versions of Chrome, Safari, and Firefox for OS X.
 
@@ -21,7 +22,7 @@ Install two npm packages from the command line:
 * npm install websocket
 * npm install nodemon
 
-Nodemon is a package that will automate restarting your server after each edit. Trust me, you'll appreciate it!
+Nodemon is a package that will automate restarting your server after each edit. If you haven't used it before, you'll appreciate it!
 
 ## Technology
 
@@ -31,17 +32,17 @@ Nodemon is a package that will automate restarting your server after each edit. 
 
 ## Tutorial
 
-**Introduction - Why WebSockets?:** For many years, the web’s communication paradigm was that a client, usually via a web browser, requested data from a server and the server responded to those requests. As the years passed, web applications matured, became more powerful and complex, and consumed more and more data. However, the existing HTTP model of client-initiated communication limited their usefulness and usability. Several work-arounds were developed, one of the most popular of which was long-polling.
+**Introduction - Why WebSockets?:** For many years, the web’s communication paradigm was that a client, usually via a web browser, requested data from a server. The server then responded to those requests. As the years passed, web applications matured, became more powerful and complex, and consumed increasing amounts of data. However, the existing HTTP model of client-initiated communication limited their usefulness and usability. Several work-arounds were developed, one of the most popular of which was long-polling.
 
-Long-polling involves keeping an HTTP connection open until the server has data to push to the client. However, this and other solutions carried the overhead that comes with HTTP. Every HTTP request requires that request headers and cookie data be transferred to the server, which increased latency (increased the time it takes for the server to respond). What was needed was a way of creating a persistent, low latency connection that could support transactions initiated by *either* the client or server.
+Long-polling involves keeping an HTTP connection open until the server has data it can push to the client. However, this and other solutions carried the overhead that comes with HTTP. Each HTTP request requires that request headers and cookie data be transferred to the server, which increases latency (increases the time it takes for the server to respond). What was needed was a way of creating a persistent, low latency connection that could support transactions initiated by *either* the client or server.
 
-WebSockets meets this requirement by establishing a persistent socket connection between the client and server. Once the connection is created, it will remain open until the client or server wants to close it. This significantly reduces the burden on the server and is well-suited for low latency applications. In this tutorial, you are going to learn how to use WebSockets to build a messaging app, which will hopefully help you use this awesome protocol in your own applications. But first, a high-level overview of how the WebSockets protocol works…
+The WebSockets protocol meets this requirement by establishing a persistent socket connection between the client and server. Once the connection is created, it will remain open until the client or server wants to close it. This significantly reduces the burden on the server and is well-suited for low latency applications. In this tutorial, you are going to learn how to use WebSockets to build a messaging app, which will hopefully help you use this awesome protocol in your own applications. But first, a high-level overview of how the WebSockets protocol works…
 
 A client establishes a WebSocket connection with a server through a process known as *the WebSocket handshake*. First, the client sends a regular HTTP request to the server. An Upgrade header is included in this request that informs the server that the client wishes to establish a WebSocket connection. If the server supports the WebSocket protocol, it grants the upgrade and sends an Upgrade header in its response.
 
 Once the handshake is complete, the original HTTP connection is changed to a WebSocket connection that uses the same underlying TCP/IP connection. Data can now be sent in either direction over the connection.
 
-Now that you have a bit of background, let’s make this happen! For this tutorial, assuming you already have a JavaScript development environment get up on your computer, you'll need access to somewhere that has Node.js installed along with its URL or IP address. Luckily, this can even be your own computer!
+Now that you have a bit of background, let’s make this happen! For this tutorial (assuming you already have a JavaScript development environment set up on your computer) you'll just need access to somewhere that has Node.js installed along with its URL or IP address. Conveniently, this can even be your own computer.
 
 **Part 1 - The Server:** this section will include instructions on how to implement a simple Node.js websocket server. It will also include the code along with explanations.
 
