@@ -439,7 +439,7 @@ And we’re done! At least for now. Spend a few minutes test driving your work. 
 
 What happens when you send a message? Do you *really* want the message to be sent back to yourself?
 
-![alt text](https://github.com/bigrobsf/websocket-chat/images/hitmeup_nocss.jpg "Form with no CSS")
+![alt text](https://github.com/bigrobsf/websocket-chat/blob/master/images/hitmeup_nocss.jpg "Form with no CSS")
 
 In Part 3, we’ll add a few more features that will make it more closely resemble a production-ready messaging app.
 
@@ -447,7 +447,7 @@ In Part 3, we’ll add a few more features that will make it more closely resemb
 
 Our app is working as expected, but the message field is rather cramped and the interface isn’t very nice to look at. How about we add some styling so it looks like this?
 
-![alt text](https://github.com/bigrobsf/websocket-chat/images/hitmeupv1c.jpg "Form with CSS")
+![alt text](https://github.com/bigrobsf/websocket-chat/blob/master/images/hitmeupv1c.jpg "Form with CSS")
 
 What a difference! To make this happen, we’ll create a **css** file and add a link to it from our **index.html** page.
 
