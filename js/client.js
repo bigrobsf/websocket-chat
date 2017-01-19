@@ -4,13 +4,13 @@
 /* jshint browser: true */
 /* jshint mocha: true */
 
-'use strict';
+'use strict'; // optional
 
 // Creates a new WebSocket connection, which will fire the open connection event
 let socket = new WebSocket('ws://localhost:3001', 'sample-protocol');
 let clientKey = '';
 
-window.onload = () => {
+window.onload = function() {
   let messageField = document.getElementById('message-area');
   let messageList = document.getElementById('message-log');
   let socketStatus = document.getElementById('status');
@@ -20,14 +20,14 @@ window.onload = () => {
   let sendBtn = document.getElementById('send');
 
   // Set connection status on form to Connected
-  socket.onopen = (event) => {
+  socket.onopen = function(event) {
     socketStatus.innerHTML = 'Connected.';
     socketStatus.className = 'open';
   };
 
   // Listens for incoming data. When a message is received, the message
   // event is sent to this function
-  socket.onmessage = (event) => {
+  socket.onmessage = function(event) {
     let messageField = document.getElementById('message-area').contentDocument;
     let msg = JSON.parse(event.data);
 
@@ -47,18 +47,18 @@ window.onload = () => {
   };
 
   // Handles errors. In this case it simply logs them
-  socket.onerror = (error) => {
+  socket.onerror = function(error) {
     console.log('WebSocket Error: ' + error);
   };
 
   // Set connection status on form to Disconnected
-  socket.onclose = (event) => {
+  socket.onclose = function(event) {
     socketStatus.innerHTML = 'Disconnected from WebSocket.';
     socketStatus.className = 'closed';
   };
 
   // Close the WebSocket connection when the Disconnect button is clicked
-  closeBtn.onclick = (event) => {
+  closeBtn.onclick = function(event) {
     event.preventDefault();
 
     socket.close();
@@ -67,18 +67,19 @@ window.onload = () => {
   };
 
   // Reload the browser window when the Connect button is clicked
-  openBtn.onclick = (event) => {
+  openBtn.onclick = function(event) {
     window.location.reload(true);
   };
 
   // Calls the sendMessage function if the send button is clicked
-  sendBtn.onclick = (event) => {
+  sendBtn.onclick = function(event) {
     sendMessage();
   };
 
   // Calls the sendMessage function if the enter key is pressed
-  document.querySelector('#message-area').addEventListener('keypress', (event) => {
+  document.querySelector('#message-area').addEventListener('keypress', function(event) {
     event.stopPropagation();
+    
     if(event.keyCode === 13 && !event.shiftKey) {
       event.preventDefault();
 

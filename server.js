@@ -3,14 +3,14 @@
 /* jshint node: true */
 /* jshint browser: true */
 /* jshint mocha: true */
-'use strict';
+'use strict'; // optional
 
 const PORT = process.env.PORT || 3001;
 
 let http = require('http');
 let WebSocketServer = require('websocket').server;
 
-let server = http.createServer((req, res) => {});
+let server = http.createServer(function(req, res) {});
 
 let wsServer = new WebSocketServer({
   httpServer: server
@@ -19,7 +19,7 @@ let wsServer = new WebSocketServer({
 let clients = {};
 
 // listens for connection requests, stores the client info, and sends it to client
-wsServer.on('request', (req) => {
+wsServer.on('request', function(req) {
   let connection = req.accept('sample-protocol', req.origin);
   let id = createUUID();
 
@@ -32,7 +32,7 @@ wsServer.on('request', (req) => {
   console.log((new Date()) + ' Connection accepted [' + id + ']');
 
   // listens for incoming messages and broadcasts them to all other clients
-  connection.on('message', (message) => {
+  connection.on('message', function(message) {
     let msgString = message.utf8Data;
     let msgObj = JSON.parse(msgString);
 
@@ -51,7 +51,7 @@ wsServer.on('request', (req) => {
   });
 
   // listens for close requests
-  connection.on('close', (reasonCode, description) => {
+  connection.on('close', function(reasonCode, description) {
     delete clients[id];
 
     console.log((new Date()) + ' Peer' + connection.remoteAddress +
@@ -83,11 +83,6 @@ function createIdObj(id) {
 
 // =============================================================================
 // Fire up the server
-server.listen(PORT, () => {
+server.listen(PORT, function() {
   console.log((new Date()) + ' Server is listening on port ' + PORT);
 });
-
-
-
-
-// end
