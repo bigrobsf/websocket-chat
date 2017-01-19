@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/bigrobsf/websocket-chat#readme",
   "dependencies": {
+    "express": "^4.14.0",
     "websocket": "^1.0.24"
   }
 }
