@@ -6,8 +6,11 @@
 
 'use strict'; // optional
 
+// let host = location.origin.replace(/^http/, 'ws');
+let host = 'ws://localhost:3001';
+
 // Creates a new WebSocket connection, which will fire the open connection event
-let socket = new WebSocket('ws://localhost:3001', 'sample-protocol');
+let socket = new WebSocket(host, 'sample-protocol');
 let clientKey = '';
 
 window.onload = function() {
@@ -79,7 +82,7 @@ window.onload = function() {
   // Calls the sendMessage function if the enter key is pressed
   document.querySelector('#message-area').addEventListener('keypress', function(event) {
     event.stopPropagation();
-    
+
     if(event.keyCode === 13 && !event.shiftKey) {
       event.preventDefault();
 
