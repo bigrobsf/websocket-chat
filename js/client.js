@@ -6,8 +6,8 @@
 
 'use strict'; // optional
 
-// let host = location.origin.replace(/^http/, 'ws');
-let host = 'ws://localhost:3001';
+let host = location.origin.replace(/^http/, 'ws');
+// let host = 'ws://localhost:3001';
 
 // Creates a new WebSocket connection, which will fire the open connection event
 let socket = new WebSocket(host, 'sample-protocol');
