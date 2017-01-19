@@ -17,70 +17,70 @@ let wsServer = new WebSocketServer({
 });
 
 let clients = {};
-let count = 0; // remove later
 
-// listens for connection requests and stores the client info
+// listens for connection requests, stores the client info, and sends it to client
 wsServer.on('request', (req) => {
   let connection = req.accept('sample-protocol', req.origin);
-//   let id = createGUID();
-  // specific ID for this client and increment count
-  let id = count++; // remove later
+  let id = createUUID();
 
   clients[id] = connection;
-//
-//   let idObj = createIdObj(id);
-//
-//   clients[id].send(JSON.stringify(idObj));
-//
+
+  let idObj = createIdObj(id);
+
+  clients[id].send(JSON.stringify(idObj));
+
   console.log((new Date()) + ' Connection accepted [' + id + ']');
-//
+
   // listens for incoming messages and broadcasts them to all other clients
   connection.on('message', (message) => {
     let msgString = message.utf8Data;
-//     let msgObj = JSON.parse(msgString);
-//
-//     let receivedId = msgObj.clientKey;
-//
-//     msgString = JSON.stringify(msgObj);
-//
-    for (let id in clients) {
-//       if (id !== receivedId) clients[id].sendUTF(msgString);
-      clients[id].sendUTF(msgString); // remove later
-    }
+    let msgObj = JSON.parse(msgString);
 
+    let receivedId = msgObj.clientKey;
+
+    // clear client ID from message before broadcasting to other clients
+    msgObj.clientKey = '';
+
+    msgString = JSON.stringify(msgObj);
+
+    for (let id in clients) {
+      if (id !== receivedId) {
+        clients[id].sendUTF(msgString);
+      }
+    }
   });
 
   // listens for close requests
   connection.on('close', (reasonCode, description) => {
     delete clients[id];
+
     console.log((new Date()) + ' Peer' + connection.remoteAddress +
       ' disconnected. Reason code: ' + reasonCode + '.');
   });
 });
-//
-// // =============================================================================
-// // GUID generator - not guaranteed to be unique, but good enough for demo purposes
-// function createGUID() {
-//   return (S4() + S4() + "-" + S4() + "-4" + S4().substr(0,3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
-// }
-//
-// function S4() {
-//   return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-// }
-//
-//
-// // =============================================================================
-// // construct clientID object
-// function createIdObj(id) {
-//   let initMsg = {
-//     type: 'id',
-//     clientKey: id,
-//     date: Date.now()
-//   };
-//
-//   return initMsg;
-// }
-//
+
+// =============================================================================
+// UUID generator - not guaranteed to be unique, but good enough for demo purposes
+function createUUID() {
+  return (S4() + S4() + "-" + S4() + "-4" + S4().substr(0,3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
+}
+
+function S4() {
+  return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+}
+
+// =============================================================================
+// construct clientID object
+function createIdObj(id) {
+  let initMsg = {
+    type: 'id',
+    clientKey: id,
+    date: Date.now()
+  };
+
+  return initMsg;
+}
+
 // =============================================================================
 // Fire up the server
 server.listen(PORT, () => {

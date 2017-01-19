@@ -8,7 +8,7 @@
 
 // Creates a new WebSocket connection, which will fire the open connection event
 let socket = new WebSocket('ws://localhost:3001', 'sample-protocol');
-// let clientKey = '';
+let clientKey = '';
 
 window.onload = () => {
   let messageField = document.getElementById('message-area');
@@ -28,25 +28,22 @@ window.onload = () => {
   // Listens for incoming data. When a message is received, the message
   // event is sent to this function
   socket.onmessage = (event) => {
-  //   let messageField = document.getElementById('message-area').contentDocument;
-    // let msg = JSON.parse(event.data);
-    let message = event.data; // remove later
-    messageList.innerHTML += '<li class="received"><span>Received: </span>' +
-                                message + '</li>';
+    let messageField = document.getElementById('message-area').contentDocument;
+    let msg = JSON.parse(event.data);
 
-    // let time = new Date(msg.date);
-    // let timeStr = time.toLocaleTimeString();
+    let time = new Date(msg.date);
+    let timeStr = time.toLocaleTimeString();
 
     // switch statement to easily add additional functions based on message type
-    // switch(msg.type) {
-    //   case 'id':
-    //     clientKey = msg.clientKey;
-    //     break;
-    //   case 'message':
-    //     messageList.innerHTML += '<li class="received"><span>Received: ' +
-    //       timeStr + '</span>' + msg.text + '</li>';
-    //     break;
-    // }
+    switch(msg.type) {
+      case 'id':
+        clientKey = msg.clientKey;
+        break;
+      case 'message':
+        messageList.innerHTML += '<li class="received"><span>Received: ' +
+          timeStr + '</span>' + msg.text + '</li>';
+        break;
+    }
   };
 
   // Handles errors. In this case it simply logs them
@@ -80,7 +77,7 @@ window.onload = () => {
   };
 
   // Calls the sendMessage function if the enter key is pressed
-  document.querySelector('#message-area').addEventListener('keypress', function (event) {
+  document.querySelector('#message-area').addEventListener('keypress', (event) => {
     event.stopPropagation();
     if(event.keyCode === 13 && !event.shiftKey) {
       event.preventDefault();
@@ -97,10 +94,9 @@ window.onload = () => {
     let message = messageField.value;
 
     if (message.length > 0) {
-      // let msg = createMsgObj(message, clientKey);
+      let msg = createMsgObj(message, clientKey);
 
-      // socket.send(JSON.stringify(msg));
-      socket.send(message); // remove later
+      socket.send(JSON.stringify(msg));
 
       messageList.innerHTML += '<li class="sent"><span>Sent: </span>' +
         message + '</li>';
@@ -112,31 +108,29 @@ window.onload = () => {
     return false;
   }
 };
-//
-// // =============================================================================
-// // consruct message object
-// function createMsgObj(message, clientKey) {
-//   let msg = {
-//     type: 'message',
-//     msgId: createMsgId(),
-//     text: message,
-//     clientKey: clientKey,
-//     date: Date.now()
-//   };
-//
-//   console.log(msg.msgId);
-//
-//   return msg;
-// }
-//
-// // =============================================================================
-// // use closure to create and increment counter for message ID
-// var createMsgId = (function() {
-//   var counter = 0;
-//   return function() {
-//     return counter++;
-//   };
-// })();
+
+// =============================================================================
+// construct message object
+function createMsgObj(message, clientKey) {
+  let msg = {
+    type: 'message',
+    msgId: createMsgId(),
+    text: message,
+    clientKey: clientKey,
+    date: Date.now()
+  };
+
+  return msg;
+}
+
+// =============================================================================
+// use closure to create and increment counter for message ID
+var createMsgId = (function() {
+  var counter = 0;
+  return function() {
+    return counter++;
+  };
+})();
 
 
 

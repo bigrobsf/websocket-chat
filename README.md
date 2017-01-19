@@ -26,7 +26,7 @@ Nodemon is a package that will automate restarting your server after each edit. 
 
 ## Technology
 
-**Node.js** is an open-source, cross-platform JavaScript runtime environment for developing tools and applications. The runtime environment uses the Google V8 engine (built for Google Chrome) to interpret JavaScript. Node.js has an event-driven architecture that is non-blocking and supports asynchronous input/output. It seeks to optimize throughput and scalability, which makes it ideal for building web servers and real-time web applications such as chat apps and browser games.
+**Node.js** is an open-source, cross-platform JavaScript runtime environment for developing tools and applications. It uses the Google V8 engine (built for Google Chrome) to interpret JavaScript. Node.js has an event-driven architecture that is non-blocking and supports asynchronous input/output. It seeks to optimize throughput and scalability, which makes it ideal for building web servers and real-time web applications such as chat apps and browser games.
 
 **WebSockets** is an API introduced with the HTML5 specification. The technology allows for a continuous bi-directional connection between a client and server. This makes it ideal for messaging / chat applications. The client is usually a user’s browser and thus the client-side is implemented using HTML and JavaScript. The server, however, can be implemented on any number of platforms though in this tutorial we will build the server using JavaScript and Node.js.
 
