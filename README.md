@@ -856,37 +856,42 @@ server.listen(PORT, function() {
 
 ## The Client
 
-First, return to the client.js file and from within socket.onmessage, remove:
+First, return to the **client.js** file and from within `socket.onmessage`, remove:
 
+```
 let message = event.data;
 
 messageList.innerHTML += '<li class="received"><span>Received: </span>' + message + '</li>';
+```
 
-and from within sendMessage(), remove:
+and from within `sendMessage()`, remove:
 
-socket.send(message);
+`socket.send(message);`
 
 Now we have several lines of code to add. Start at the top of the file and immediately below:
 
-let socket = new WebSocket('ws://localhost:3001', 'sample-protocol');,
+`let socket = new WebSocket('ws://localhost:3001', 'sample-protocol');`,
 
 add:
 
+```javascript
 let clientKey = '';
+```
 
-Next, within socket.onmessage and before let message = event.data; , add:
+Next, within `socket.onmessage` and before `let message = event.data;` , add:
 
+```javascript
 let messageField = document.getElementById('messagearea').contentDocument;
 let msg = JSON.parse(event.data);
+```
 
-At the end of socket.onmessage, add the following lines:
+At the end of `socket.onmessage`, add the following lines:
 
+```javascript
 let time = new Date(msg.date);
 let timeStr = time.toLocaleTimeString();
 
-// switch statement to easily add additional functions based on
-// message type
-
+// switch statement to easily add additional functions based on message type
 switch(msg.type) {
   case 'id':
     clientKey = msg.clientKey;
@@ -896,15 +901,18 @@ switch(msg.type) {
            timeStr + '</span>' + msg.text + '</li>';
     break;
 }
+```
 
-Next, within sendMessage() and at the beginning of the code within the if statement, add:
+Next, within `sendMessage()` and at the beginning of the code within the **if** statement, add:
 
+```javascript
 let msg = createMsgObj(message, clientKey);
 socket.send(JSON.stringify(msg));
+```
 
 And finally, at the end of the file, add these functions, which create the message object that will be sent to the server as well as the message ID:
-
-// =============================================================================
+```javascript
+//=============================================================================
 // construct message object
 function createMsgObj(message, clientKey) {
   let msg = {
@@ -917,6 +925,143 @@ function createMsgObj(message, clientKey) {
   return msg;
 }
 
+//=============================================================================
+// use closure to create and increment counter for message ID
+var createMsgId = (function() {
+  var counter = 0;
+  return function() {
+    return counter++;
+  };
+})();
+```
+
+And we’re done!
+
+### Code Check
+
+Your final client code should look like this:
+
+```javascript
+'use strict'; // optional
+
+// Creates a new WebSocket connection, which will fire the open connection event
+let socket = new WebSocket('ws://localhost:3001', 'sample-protocol');
+let clientKey = '';
+
+window.onload = function() {
+  let messageField = document.getElementById('message-area');
+  let messageList = document.getElementById('message-log');
+  let socketStatus = document.getElementById('status');
+
+  let closeBtn = document.getElementById('close');
+  let openBtn = document.getElementById('open');
+  let sendBtn = document.getElementById('send');
+
+  // Set connection status on form to Connected
+  socket.onopen = function(event) {
+    socketStatus.innerHTML = 'Connected.';
+    socketStatus.className = 'open';
+  };
+
+  // Listens for incoming data. When a message is received, the message
+  // event is sent to this function
+  socket.onmessage = function(event) {
+    let messageField = document.getElementById('message-area').contentDocument;
+    let msg = JSON.parse(event.data);
+
+    let time = new Date(msg.date);
+    let timeStr = time.toLocaleTimeString();
+
+    // switch statement to easily add additional functions based on message type
+    switch(msg.type) {
+      case 'id':
+        clientKey = msg.clientKey;
+        break;
+      case 'message':
+        messageList.innerHTML += '<li class="received"><span>Received: ' +
+          timeStr + '</span>' + msg.text + '</li>';
+        break;
+    }
+  };
+
+  // Handles errors. In this case it simply logs them
+  socket.onerror = function(error) {
+    console.log('WebSocket Error: ' + error);
+  };
+
+  // Set connection status on form to Disconnected
+  socket.onclose = function(event) {
+    socketStatus.innerHTML = 'Disconnected from WebSocket.';
+    socketStatus.className = 'closed';
+  };
+
+  // Close the WebSocket connection when the Disconnect button is clicked
+  closeBtn.onclick = function(event) {
+    event.preventDefault();
+
+    socket.close();
+
+    return false;
+  };
+
+  // Reload the browser window when the Connect button is clicked
+  openBtn.onclick = function(event) {
+    window.location.reload(true);
+  };
+
+  // Calls the sendMessage function if the send button is clicked
+  sendBtn.onclick = function(event) {
+    sendMessage();
+  };
+
+  // Calls the sendMessage function if the enter key is pressed
+  document.querySelector('#message-area').addEventListener('keypress', function(event) {
+    event.stopPropagation();
+
+    if(event.keyCode === 13 && !event.shiftKey) {
+      event.preventDefault();
+
+      sendMessage();
+
+      return false;
+    }
+  });
+
+  // =============================================================================
+  // sends message to server
+  function sendMessage() {
+    let message = messageField.value;
+
+    if (message.length > 0) {
+      let msg = createMsgObj(message, clientKey);
+
+      socket.send(JSON.stringify(msg));
+
+      messageList.innerHTML += '<li class="sent"><span>Sent: </span>' +
+        message + '</li>';
+
+      messageField.value = '';
+      messageField.focus();
+    }
+
+    return false;
+  }
+};
+
+// =============================================================================
+// construct message object
+function createMsgObj(message, clientKey) {
+  let msg = {
+    type: 'message',
+    msgId: createMsgId(),
+    text: message,
+    clientKey: clientKey,
+    date: Date.now()
+  };
+
+  return msg;
+}
+
 // =============================================================================
 // use closure to create and increment counter for message ID
 var createMsgId = (function() {
@@ -926,48 +1071,39 @@ var createMsgId = (function() {
   };
 })();
 
-And we’re done!
+```
 
-Code Check
+## Conclusion
 
-Your final client code should look like this:
-
-
-
-
-
-Conclusion
-
-Use-Cases
+### Use-Cases
 
 WebSockets provide a true bidirectional (or full-duplex) connectivity between a server and one or more clients. The technology greatly reduces the load on servers by eliminating the need for long-polling and HTTP header exchange.
 
-We’ve demonstrated that we can use WebSockets to build a working messaging application, but can you think of any other use-cases for WebSockets? Ask yourself two questions:
+We’ve demonstrated that we can use WebSockets to build a working messaging application, but what are some other use-cases for WebSockets? Does an app:
 
-Does your app require multiple users to communicate with each other? Or is your app a window into server-side data that’s is always changing?
+* require multiple users to communicate with each other? Or...
+* provide a window to server-side data that is always changing?
 
-If your answer to either or both of these questions is yes, your app is a likely use-case for WebSockets. Here are a few other types of apps that use or could use WebSockets:
+If so, the app is a likely use-case for WebSockets. Here are a few other types of apps that use or could use WebSockets:
 
-•	Multiplayer games
-•	Collaborative editing and coding
-•	Social feeds
-•	Financial and sports tickers
-•	Location-based apps
+* Multiplayer games
+* Collaborative document or code editing
+* Social feeds
+* Financial and sports tickers
+* Location-based
 
+### Additional Features
 
-Additional Features
+So we have a working chat app, but as I mentioned in the introduction, the functionality is rather basic and it isn’t secure. What features might I add after I graduate and can take the time? Here’s my wish list:
 
-So we have a working chat app, but as I mentioned in the introduction, the functionality is rather basic and it isn’t secure. So what features might I add after I graduate and can take the time? Here’s my wish list:
-
-•	Use the wss:// prefix (rather than ws://) to establish a WebSocket Secure connection similar to https://
-•	Enable the use of usernames
-•	Add user authentication and authorization
-•	Add an indicator that a message was successfully sent
-•	Add an indicator that a message was received
-•	Allow for sending files such as photos
+* Use the wss:// prefix (rather than ws://) to establish a WebSocket Secure connection similar to https://
+* Enable the use of usernames
+* Add user authentication and authorization
+* Add an indicator that a message was successfully sent
+* Add an indicator that a message was received
+* Allow for the sending of files such as photos
 
 Can you think of any others?
-
 
 ## Sources:
 
