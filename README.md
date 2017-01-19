@@ -201,75 +201,41 @@ let wsServer = new WebSocketServer({
 });
 
 let clients = {};
+let count = 0;
 
-// listens for connection requests, stores the client info, and sends it to client
+// listens for connection requests and stores the client info
 wsServer.on('request', function(req) {
   let connection = req.accept('sample-protocol', req.origin);
-  let id = createUUID();
+  let id = count++;
 
   clients[id] = connection;
 
-  let idObj = createIdObj(id);
-
-  clients[id].send(JSON.stringify(idObj));
-
   console.log((new Date()) + ' Connection accepted [' + id + ']');
 
-  // listens for incoming messages and broadcasts them to all other clients
+  // listens for incoming messages and broadcasts them to all clients
   connection.on('message', function(message) {
     let msgString = message.utf8Data;
-    let msgObj = JSON.parse(msgString);
-
-    let receivedId = msgObj.clientKey;
-
-    // clear client ID from message before broadcasting to other clients
-    msgObj.clientKey = '';
-
-    msgString = JSON.stringify(msgObj);
+    console.log('server received message: ', message);
 
     for (let id in clients) {
-      if (id !== receivedId) {
-        clients[id].sendUTF(msgString);
-      }
+      clients[id].sendUTF(msgString);
     }
   });
 
   // listens for close requests
   connection.on('close', function(reasonCode, description) {
     delete clients[id];
-
     console.log((new Date()) + ' Peer' + connection.remoteAddress +
       ' disconnected. Reason code: ' + reasonCode + '.');
   });
 });
 
 // =============================================================================
-// UUID generator - not guaranteed to be unique, but good enough for demo purposes
-function createUUID() {
-  return (S4() + S4() + "-" + S4() + "-4" + S4().substr(0,3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
-}
-
-function S4() {
-  return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-}
-
-// =============================================================================
-// construct clientID object
-function createIdObj(id) {
-  let initMsg = {
-    type: 'id',
-    clientKey: id,
-    date: Date.now()
-  };
-
-  return initMsg;
-}
-
-// =============================================================================
 // Fire up the server
 server.listen(PORT, function() {
   console.log((new Date()) + ' Server is listening on port ' + PORT);
 });
+
 ```
 
 ## Part 2 – The Client
@@ -473,11 +439,15 @@ And we’re done! At least for now. Spend a few minutes test driving your work. 
 
 What happens when you send a message? Do you *really* want the message to be sent back to yourself?
 
+![alt text](https://github.com/bigrobsf/websocket-chat/images/hitmeup_nocss.tiff "Form with no CSS")
+
 In Part 3, we’ll add a few more features that will make it more closely resemble a production-ready messaging app.
 
 ### **CSS**
 
 Our app is working as expected, but the message field is rather cramped and the interface isn’t very nice to look at. How about we add some styling so it looks like this?
+
+![alt text](https://github.com/bigrobsf/websocket-chat/images/hitmeupv1c.tiff "Form with CSS")
 
 What a difference! To make this happen, we’ll create a **css** file and add a link to it from our **index.html** page.
 
@@ -499,7 +469,7 @@ html {
   background: #616161;
 }
 
-/* =====================================================================
+/* =============================================================================
 Form */
 h1 {
   margin-top: 0;
@@ -532,8 +502,7 @@ h1 {
   color: #e53935;
 }
 
-
-/* ======================================================================
+/* =============================================================================
 Message log */
 ul {
   list-style: none;
@@ -569,7 +538,7 @@ ul li span {
 .received {
 }
 
-/* ======================================================================
+/* =============================================================================
 Message composition area */
 textarea {
   width: 100%;
@@ -584,7 +553,7 @@ textarea {
   margin-top: 18px;
 }
 
-/* ======================================================================
+/* =============================================================================
 Buttons */
 button {
   display: inline-block;
@@ -623,9 +592,8 @@ At this point, your client code should look very similar to this:
 ```javascript
 'use strict'; // optional
 
-// Creates a new WebSocket connection, which will fire the open connection event
+// Creates a new WebSocket connection, which will fire the open event
 let socket = new WebSocket('ws://localhost:3001', 'sample-protocol');
-let clientKey = '';
 
 window.onload = function() {
   let messageField = document.getElementById('message-area');
@@ -642,25 +610,12 @@ window.onload = function() {
     socketStatus.className = 'open';
   };
 
-  // Listens for incoming data. When a message is received, the message
-  // event is sent to this function
+  // Listens for incoming messages. When a message is received, the message
+  // event is handled by this function
   socket.onmessage = function(event) {
-    let messageField = document.getElementById('message-area').contentDocument;
-    let msg = JSON.parse(event.data);
-
-    let time = new Date(msg.date);
-    let timeStr = time.toLocaleTimeString();
-
-    // switch statement to easily add additional functions based on message type
-    switch(msg.type) {
-      case 'id':
-        clientKey = msg.clientKey;
-        break;
-      case 'message':
-        messageList.innerHTML += '<li class="received"><span>Received: ' +
-          timeStr + '</span>' + msg.text + '</li>';
-        break;
-    }
+    let message = event.data;
+    messageList.innerHTML += '<li class="received"><span>Received: </span>' +
+                                message + '</li>';
   };
 
   // Handles errors. In this case it simply logs them
@@ -696,7 +651,6 @@ window.onload = function() {
   // Calls the sendMessage function if the enter key is pressed
   document.querySelector('#message-area').addEventListener('keypress', function(event) {
     event.stopPropagation();
-
     if(event.keyCode === 13 && !event.shiftKey) {
       event.preventDefault();
 
@@ -706,16 +660,13 @@ window.onload = function() {
     }
   });
 
-  // =============================================================================
+  // ==============================================================================
   // sends message to server
   function sendMessage() {
     let message = messageField.value;
 
     if (message.length > 0) {
-      let msg = createMsgObj(message, clientKey);
-
-      socket.send(JSON.stringify(msg));
-
+      socket.send(message);
       messageList.innerHTML += '<li class="sent"><span>Sent: </span>' +
         message + '</li>';
 
@@ -727,29 +678,6 @@ window.onload = function() {
   }
 };
 
-// =============================================================================
-// construct message object
-function createMsgObj(message, clientKey) {
-  let msg = {
-    type: 'message',
-    msgId: createMsgId(),
-    text: message,
-    clientKey: clientKey,
-    date: Date.now()
-  };
-
-  return msg;
-}
-
-// =============================================================================
-// use closure to create and increment counter for message ID
-var createMsgId = (function() {
-  var counter = 0;
-  return function() {
-    return counter++;
-  };
-})();
-
 ```
 
 ## Part 3 – Suppressing the Echo
@@ -759,16 +687,20 @@ Now let’s add some features that will turn this into a messaging app that is u
 Next, we’ll store the message string in a JSON object that will contain additional information such as the message type, the aforementioned client identifier, and a timestamp. Instead of passing a text string back and forth, we’ll be sending a stringified JSON object.
 
 Finally, we’ll add a bit of code that will stop the server from echoing a message back to the original sender while still broadcasting it to all other connected clients.
-The Server
-Open your server.js file and find and delete the following lines of code:
 
+### The Server
+
+Open your **server.js** file and find and delete the following lines of code:
+
+```javascript
 let count = 0;
 let id = count++;
+```
+This simple sequential ID will be replaced with a server-generated 128-bit integer known as an UUID (or GUID). Add the below functions between `wsServer.on()` and `server.listen()`:
 
-This simple sequential ID will be replaced with a server-generated 128-bit integer known as an UUID (or GUID). Add the below functions between wsServer.on() and server.listen():
-
-// ===================================================================
-// UUID generator - not guaranteed to be unique, but good enough for // demo purposes
+```javascript
+// =============================================================================
+// UUID generator - not guaranteed to be unique, but good enough for demo purposes
 function createUUID() {
   return (S4() + S4() + "-" + S4() + "-4" + S4().substr(0,3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
 }
@@ -777,7 +709,7 @@ function S4() {
   return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
 }
 
-//====================================================================
+//==============================================================================
 // construct clientID object
 function createIdObj(id) {
   let initMsg = {
@@ -787,48 +719,143 @@ function createIdObj(id) {
   };
   return initMsg;
 }
+```
 
-Now add the below line inside the wsServer.on() immediately after:
+Below this line and inside `wsServer.on()`:
 
+```
 let connection = req.accept('sample-protocol', req.origin);
+```
 
+Add this line:
+```javascript
 let id = createUUID();
+```
+This will call the function we defined above that will create a unique client ID. Next, add the below code immediately after: `clients[id] = connection;`
 
-This will call the function we defined above that will create a unique client ID. Next, add the below code immediately after: clients[id] = connection;
-
+```javascript
 let idObj = createIdObj(id);
 clients[id].send(JSON.stringify(idObj));
+```
 
-These two lines create the JSON that will contain the client ID we generated earlier and transmit it to the client. Next, add the below lines in connection.on(), immediately after: let msgString = message.utf8Data;
+These two lines create the JSON that will contain the client ID we generated earlier and transmit it to the client. Next, add the below lines in `connection.on()`, immediately after: `let msgString = message.utf8Data;`
 
+```javascript
 let msgObj = JSON.parse(msgString);
 let receivedId = msgObj.clientKey;
+
 msgObj.clientKey = '';
 msgString = JSON.stringify(msgObj);
+```
 
 These four lines parse the JSON string received from the client, save the client key into a variable so the server can reference it later, clear the client key so that it doesn’t get transmitted to the other clients, and changes the JSON back into a string before broadcasting it.
 
-Finally, wrap this line, which is already inside of a for loop, in an if statement:
+Finally, wrap this line, which is already inside of a **for** loop, in an **if** statement:
 
-clients[id].sendUTF(msgString);
+`clients[id].sendUTF(msgString);`
 
 Like this:
 
+```javascript
 if (id !== receivedId) {
   clients[id].sendUTF(msgString);
 }
+```
 
-The if statement simply tells the server to not send the message to the client that originated by comparing that client’s ID to the ID received in the message object.
+The **if** statement simply tells the server to not send the message to the client that originated by comparing that client’s ID to the ID received in the message object.
 
-Code Check
+### Code Check
 
 Your final server code should look like this:
 
+```javascript
+'use strict'; // optional
 
+const PORT = process.env.PORT || 3001;
 
+let http = require('http');
+let WebSocketServer = require('websocket').server;
 
+let server = http.createServer(function(req, res) {});
 
-The Client
+let wsServer = new WebSocketServer({
+  httpServer: server
+});
+
+let clients = {};
+
+// listens for connection requests, stores the client info, and sends it to client
+wsServer.on('request', function(req) {
+  let connection = req.accept('sample-protocol', req.origin);
+  let id = createUUID();
+
+  clients[id] = connection;
+
+  let idObj = createIdObj(id);
+
+  clients[id].send(JSON.stringify(idObj));
+
+  console.log((new Date()) + ' Connection accepted [' + id + ']');
+
+  // listens for incoming messages and broadcasts them to all other clients
+  connection.on('message', function(message) {
+    let msgString = message.utf8Data;
+    let msgObj = JSON.parse(msgString);
+
+    let receivedId = msgObj.clientKey;
+
+    // clear client ID from message before broadcasting to other clients
+    msgObj.clientKey = '';
+
+    msgString = JSON.stringify(msgObj);
+
+    for (let id in clients) {
+      if (id !== receivedId) {
+        clients[id].sendUTF(msgString);
+      }
+    }
+  });
+
+  // listens for close requests
+  connection.on('close', function(reasonCode, description) {
+    delete clients[id];
+
+    console.log((new Date()) + ' Peer' + connection.remoteAddress +
+      ' disconnected. Reason code: ' + reasonCode + '.');
+  });
+});
+
+// =============================================================================
+// UUID generator - not guaranteed to be unique, but good enough for demo purposes
+function createUUID() {
+  return (S4() + S4() + "-" + S4() + "-4" + S4().substr(0,3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
+}
+
+function S4() {
+  return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+}
+
+// =============================================================================
+// construct clientID object
+function createIdObj(id) {
+  let initMsg = {
+    type: 'id',
+    clientKey: id,
+    date: Date.now()
+  };
+
+  return initMsg;
+}
+
+// =============================================================================
+// Fire up the server
+server.listen(PORT, function() {
+  console.log((new Date()) + ' Server is listening on port ' + PORT);
+});
+```
+
+## The Client
+
 First, return to the client.js file and from within socket.onmessage, remove:
 
 let message = event.data;
@@ -877,7 +904,7 @@ socket.send(JSON.stringify(msg));
 
 And finally, at the end of the file, add these functions, which create the message object that will be sent to the server as well as the message ID:
 
-// ===================================================================
+// =============================================================================
 // construct message object
 function createMsgObj(message, clientKey) {
   let msg = {
@@ -890,7 +917,7 @@ function createMsgObj(message, clientKey) {
   return msg;
 }
 
-// ===================================================================
+// =============================================================================
 // use closure to create and increment counter for message ID
 var createMsgId = (function() {
   var counter = 0;
