@@ -57,9 +57,9 @@ Here’s what we’ll do to get the server side up and running:
 * Listen for connections
 * Add the code that will execute when a connection is established
 
-### Create the server and listen
+### Create the Server and Listen
 
-Open a blank text document and save it as **server.js**. This is where we’ll require the http library and create the server:
+Open a blank text document and save it as **server.js**. This is where we’ll require the `http` library and create the server:
 
 ```javascript
 let http = require('http');
@@ -167,7 +167,7 @@ connection.on('message', function(message) {
 
 Also in Part 3, we’ll upgrade this simple message string to a JSON object that will contain metadata such as a message ID, a client identifier, and a time stamp.
 
-#### Listen for client disconnection
+#### Listen for Client Disconnection
 
 This function will listen for the close event and remove the disconnecting client from the client storage object. We’ll have the server log the disconnection so we can see when it happens.
 
@@ -280,7 +280,15 @@ This provides a few important user interface elements; a `<div>` that shows the 
 
 ### **JavaScript**
 
-We’re now ready to start coding the client side of our chat app! Open a blank text document and save it as **client.js** (for simplicity, we'll put all files in the same directory). We’ll start by defining the `window.onload` function, which won’t execute until the HTML page has fully loaded.
+We’re now ready to start coding the client side of our chat app! Open a blank text document and save it as **client.js** (for simplicity, we're putting all files in the same directory). Here's what the client side will handle:
+
+* Opening a Connection
+* Sending Messages to the Server
+* Receiving Message from the Server
+* Errors
+* Closing the Connection
+
+We’ll start by defining the `window.onload` function, which won’t execute until the HTML page has fully loaded.
 
 Inside the function, we need to declare several variables and initialize them by getting key elements on the page:
 
