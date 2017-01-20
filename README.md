@@ -685,11 +685,11 @@ Finally, we’ll add a bit of code that will stop the server from echoing a mess
 
 ### The Server
 
-Open your **server.js** file and find and delete the following lines of code:
+Open your **server.js** file and find and **delete** the following lines of code:
 
 ```javascript
-let count = 0;
-let id = count++;
+~~let count = 0;~~
+~~let id = count++;~~
 ```
 This simple sequential ID will be replaced with a server-generated 128-bit integer known as an UUID (or GUID). Add the below functions between `wsServer.on()` and `server.listen()`:
 
