@@ -6,17 +6,18 @@
 'use strict'; // optional
 
 const PORT = process.env.PORT || 3001;
-
 const express = require('express');
 const app = express();
+
 let server = require('http').Server(app);
 
-let WebSocketServer = require('websocket').server;
-
 app.use(express.static(__dirname + '/public'));
+
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
 });
+
+let WebSocketServer = require('websocket').server;
 
 let wsServer = new WebSocketServer({
   httpServer: server

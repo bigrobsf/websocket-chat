@@ -881,7 +881,6 @@ let clientKey = '';
 Next, within `socket.onmessage` and before `let message = event.data;` , add:
 
 ```javascript
-let messageField = document.getElementById('messagearea').contentDocument;
 let msg = JSON.parse(event.data);
 ```
 
@@ -966,7 +965,6 @@ window.onload = function() {
   // Listens for incoming data. When a message is received, the message
   // event is sent to this function
   socket.onmessage = function(event) {
-    let messageField = document.getElementById('message-area').contentDocument;
     let msg = JSON.parse(event.data);
 
     let time = new Date(msg.date);

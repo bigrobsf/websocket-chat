@@ -6,13 +6,8 @@
 
 'use strict'; // optional
 
-// let host = 'ws://localhost:3001';
 let host = location.origin.replace(/^http/, 'ws');
 console.log(host);
-
-// Creates a new WebSocket connection, which will fire the open connection event
-let socket = new WebSocket(host, 'sample-protocol');
-let clientKey = '';
 
 window.onload = function() {
   let messageField = document.getElementById('message-area');
@@ -23,16 +18,21 @@ window.onload = function() {
   let openBtn = document.getElementById('open');
   let sendBtn = document.getElementById('send');
 
+  // Creates a new WebSocket connection, which will fire the open connection event
+  let socket = new WebSocket(host, 'sample-protocol');
+  let clientKey = '';
+
   // Set connection status on form to Connected
   socket.onopen = function(event) {
     socketStatus.innerHTML = 'Connected.';
     socketStatus.className = 'open';
+    console.log(socketStatus.innerHTML);
   };
 
   // Listens for incoming data. When a message is received, the message
   // event is sent to this function
   socket.onmessage = function(event) {
-    let messageField = document.getElementById('message-area').contentDocument;
+    // let messageField = document.getElementById('message-area').contentDocument;
     let msg = JSON.parse(event.data);
 
     let time = new Date(msg.date);
@@ -42,6 +42,7 @@ window.onload = function() {
     switch(msg.type) {
       case 'id':
         clientKey = msg.clientKey;
+        console.log('clientKey received from server');
         break;
       case 'message':
         messageList.innerHTML += '<li class="received"><span>Received: ' +

@@ -19,7 +19,8 @@ h1 {
 }
 
 #wrapper {
-  width: 640px;
+  max-width: 640px;
+  min-width: 400px;
   background: #e0e0e0;
   padding: 14px;
   margin: 40px auto;
