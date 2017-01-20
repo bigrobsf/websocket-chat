@@ -66,7 +66,7 @@ let http = require('http');
 let server = http.createServer(function(req, res) {});
 ```
 
-“req” and “res” are commonly used in place of “request” and “response,” parameters of the requestListener function that is automatically added to the request event. The callback function within createServer is empty as we're not actually serving anything through a HTTP request.
+**req** and **res** are commonly used in place of **request** and **response**, parameters of the `requestListener` function that is automatically added to the **request** event. The callback function within `createServer()` is empty as we're not actually serving anything through an HTTP request.
 
 Next, we need to have the server listen on a particular port. I'll use port **3001**:
 
@@ -178,7 +178,7 @@ connection.on('close', function(reasonCode, description) {
 });
 ```
 
-And that’s our server! Later we’ll add some code to make it a bit more sophisticated, but for now we have a simple server that will accept websocket connections and broadcast received messages out to every connected client.
+And that’s our server! Later we’ll add some code to make it a bit more sophisticated, but for now we have a simple server that will accept WebSocket connections and broadcast received messages out to every connected client.
 Next stop, the client-side!
 
 ### Code Check
@@ -681,7 +681,7 @@ window.onload = function() {
 
 Now let’s add some features that will turn this into a messaging app that is usable if rather barebones. We’ll be making changes on both the server and client-side. First, we’ll have the server generate a unique ID for each client, which it will then send to the client for it to store for the duration of the session.
 
-Next, we’ll store the message string in a JSON object that will contain additional information such as the message type, the aforementioned client identifier, and a timestamp. Instead of passing a text string back and forth, we’ll be sending a stringified JSON object.
+Next, we’ll store the message string in a JSON object that will contain additional information such as the message type, the aforementioned client identifier, and a timestamp. Instead of passing a text string back and forth, we’ll be sending a "stringified" JSON object.
 
 Finally, we’ll add a bit of code that will stop the server from echoing a message back to the original sender while still broadcasting it to all other connected clients.
 
