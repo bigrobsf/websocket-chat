@@ -874,15 +874,11 @@ add:
 let clientKey = '';
 ```
 
-Next, within `socket.onmessage` and before `let message = event.data;` , add:
+Next, within `socket.onmessage`, add:
 
 ```javascript
 let msg = JSON.parse(event.data);
-```
 
-At the end of `socket.onmessage`, add the following lines:
-
-```javascript
 let time = new Date(msg.date);
 let timeStr = time.toLocaleTimeString();
 
@@ -905,7 +901,7 @@ let msg = createMsgObj(message, clientKey);
 socket.send(JSON.stringify(msg));
 ```
 
-And finally, at the end of the file, add these functions, which create the message object that will be sent to the server as well as the message ID:
+And finally, at the very end of the file, add these functions, which create the message object that will be sent to the server as well as the message ID:
 ```javascript
 //=============================================================================
 // construct message object
