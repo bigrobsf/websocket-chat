@@ -280,7 +280,7 @@ This provides a few important user interface elements; a `<div>` that shows the 
 
 ### **JavaScript**
 
-We’re now ready to start coding the client side of our chat app! Open a blank text document and save it as **client.js**. We’ll start by defining the `window.onload` function, which won’t execute until the HTML page has fully loaded.
+We’re now ready to start coding the client side of our chat app! Open a blank text document and save it as **client.js** (for simplicity, we'll put all files in the same directory). We’ll start by defining the `window.onload` function, which won’t execute until the HTML page has fully loaded.
 
 Inside the function, we need to declare several variables and initialize them by getting key elements on the page:
 
@@ -702,7 +702,7 @@ function createUUID() {
 }
 
 function S4() {
-  return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+  return (((1 + Math.random()) * 0x10000)|0).toString(16).substring(1);
 }
 
 //==============================================================================
@@ -828,7 +828,7 @@ function createUUID() {
 }
 
 function S4() {
-  return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+  return (((1 + Math.random()) * 0x10000)|0).toString(16).substring(1);
 }
 
 // =============================================================================
@@ -852,7 +852,7 @@ server.listen(PORT, function() {
 
 ## The Client
 
-First, return to the **client.js** file and from within `socket.onmessage`, remove:
+First, return to the **client.js** file and from within `socket.onmessage`, **delete**:
 
 ```
 let message = event.data;
@@ -1067,7 +1067,7 @@ var createMsgId = (function() {
 
 ### Use-Cases
 
-WebSockets provide a true bidirectional (or full-duplex) connectivity between a server and one or more clients. The technology greatly reduces the load on servers by eliminating the need for long-polling and HTTP header exchange.
+WebSockets provide a true bi-directional (or full-duplex) connectivity between a server and one or more clients. The technology greatly reduces the load on servers by eliminating the need for long-polling and HTTP header exchange.
 
 We’ve demonstrated that we can use WebSockets to build a working messaging application, but what are some other use-cases for WebSockets? Does an app:
 
