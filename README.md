@@ -535,9 +535,6 @@ ul li span {
   color: #1e88e5
 }
 
-.received {
-}
-
 /* =============================================================================
 Message composition area */
 textarea {
