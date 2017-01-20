@@ -433,7 +433,9 @@ socket.onclose = function(event) {
 };
 ```
 
-And we’re done! At least for now. Spend a few minutes test driving your work. Open the **index.html** file in two different browser windows or even two different browsers and send messages between them.
+And we’re done! At least for now. Spend a few minutes test driving your work.
+
+Start your server at the command line by typing `nodemon server.js` from within your project directory. Next, open the **index.html** file in two different browser windows or even two different browsers and send messages between them.
 
 What happens when you send a message? Do you *really* want the message to be sent back to yourself?
 
