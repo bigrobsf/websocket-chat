@@ -51,7 +51,7 @@ Now that you have a bit of background, let’s make this happen! For this tutori
 Our server will be responsible for listening for connection requests and inbound messages, broadcasting the messages to clients, and listening for disconnection requests. In part three, we will also enhance its ability to keep track of clients, which will allow us to add useful features!
 I should add that our server won’t be secure. A production server should also check the origin of requests and prevent code injection.
 
-Here’s what we’ll do to get the server side up and running:
+Here’s what we’ll do to get the server-side up and running:
 * Create an instance of the server and listen to a specific port
 * Create the web socket server
 * Listen for connections
@@ -238,7 +238,7 @@ server.listen(PORT, function() {
 
 ## Part 2 – The Client
 
-The client side has a few ingredients in addition to JavaScript. We need to have an HTML page for the user to interact with and optionally some CSS to make the interface reasonably attractive. First, the HTML.
+The client-side has a few ingredients in addition to JavaScript. We need to have an HTML page for the user to interact with and optionally some CSS to make the interface reasonably attractive. First, the HTML.
 
 ### **HTML**
 
@@ -280,7 +280,7 @@ This provides a few important user interface elements; a `<div>` that shows the 
 
 ### **JavaScript**
 
-We’re now ready to start coding the client side of our chat app! Open a blank text document and save it as **client.js** (for simplicity, we're putting all files in the same directory). Here's what the client side will handle:
+We’re now ready to start coding the client-side of our chat app! Open a blank text document and save it as **client.js** (for simplicity, we're keeping all files in the same directory). Here's what the client-side will handle:
 
 * Opening a Connection
 * Sending Messages to the Server
