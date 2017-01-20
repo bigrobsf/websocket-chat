@@ -1,8 +1,6 @@
 /* jshint esversion: 6 */
-/* jshint devel: true */
 /* jshint node: true */
 /* jshint browser: true */
-/* jshint mocha: true */
 
 'use strict'; // optional
 

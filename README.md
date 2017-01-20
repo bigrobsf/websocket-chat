@@ -154,7 +154,6 @@ Now we can attach event listeners to the connection. First, let’s add one that
 ```javascript
 // Create event listener
 connection.on('message', function(message) {
-
   // The string message that was sent to us
   let msgString = message.utf8Data;
 
@@ -215,7 +214,6 @@ wsServer.on('request', function(req) {
   // listens for incoming messages and broadcasts them to all clients
   connection.on('message', function(message) {
     let msgString = message.utf8Data;
-    console.log('server received message: ', message);
 
     for (let id in clients) {
       clients[id].sendUTF(msgString);
@@ -273,7 +271,7 @@ Copy and paste the below into an **index.html** file in the same directory as yo
     </div>
   </div>
 
-  <script src='js/client.js'></script>
+  <script src='client.js'></script>
 </body>
 </html>
 ```
@@ -453,7 +451,7 @@ What a difference! To make this happen, we’ll create a **css** file and add a 
 
 First, add the below line inside the `<head>` section just below the `<title>` tag:
 ```html
-<link rel='stylesheet' href='css/style.css'>
+<link rel='stylesheet' href='style.css'>
 ```
 Next, create a directory **css** and copy and paste the following into a **style.css** file in the new directory:
 ```css
