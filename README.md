@@ -110,10 +110,10 @@ wsServer.on('request', function(req) {
 ### Callback for Connections
 
 This is the code that will be placed within function `wsServer.on()`. It will need to:
-•	Accept the connection
-•	Create a new connection for each client
-•	Listen for incoming messages and broadcast them to clients
-•	Listen for a client disconnecting and remove it from the client list
+* accept the connection
+* Create a new connection for each client
+* Listen for incoming messages and broadcast them to clients
+* Listen for a client disconnecting and remove it from the client list
 
 #### Accept the Connection
 
@@ -1076,13 +1076,13 @@ We’ve demonstrated that we can use WebSockets to build a working messaging app
 * require multiple users to communicate with each other? Or...
 * provide a window to server-side data that is always changing?
 
-If so, the app is a likely use-case for WebSockets. Here are a few other types of apps that use or could use WebSockets:
+If so, the app is a likely use-case for WebSockets. Here are a few other types of apps that use or could use WebSockets:  
 
-* Multiplayer games
-* Collaborative document or code editing
-* Social feeds
-* Financial and sports tickers
-* Location-based
+* Multiplayer games  
+* Collaborative document or code editing  
+* Social feeds  
+* Financial and sports tickers  
+* Location-based  
 
 ### Additional Features
 
