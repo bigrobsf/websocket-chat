@@ -32,7 +32,7 @@ Nodemon is a package that will automate restarting your server after each edit. 
 
 # Tutorial
 
-## Introduction - Why WebSockets?:
+## Introduction - Why WebSockets?
 
 For many years, the web’s communication paradigm was that a client, usually via a web browser, requested data from a server. The server then responded to those requests. As the years passed, web applications matured, became more powerful and complex, and consumed increasing amounts of data. However, the existing HTTP model of client-initiated communication limited their usefulness and usability. Several work-arounds were developed, one of the most popular of which was long-polling.
 
@@ -77,7 +77,7 @@ server.listen(PORT, function() {
 });
 ```
 
-We pass in the PORT variable here as the first parameter. It is the port that we want to listen to. The second parameter is a callback function that in this came simply outputs a message output to let us know that the server is running.
+We pass in the PORT variable here as the first parameter. It is the port that we want to listen to. The second parameter is a callback function that in this case simply outputs a message output to let us know that the server is running.
 Type `nodemon server.js` at the command line and you should see something like this:
 
 `Mon Jan 16 2017 15:27:42 GMT-0800 (PST) Server is listening on port 3001`
@@ -91,7 +91,7 @@ First, we need to require the **websocket** library, which you should have insta
 ```javascript
 let WebSocketServer = require('websocket').server;
 let wsServer = new WebSocketServer({
-    httpServer: server
+  httpServer: server
 });
 ```
 
@@ -103,21 +103,21 @@ To do this, we use the `.on` method of the **WebSocketServer** object that we c
 
 ```javascript
 wsServer.on('request', function(req) {
-    // we'll add code here next that will run on connection
+  // we'll add code here next that will run on connection
 });
 ```
 
 ### Callback for Connections
 
 This is the code that will be placed within function `wsServer.on()`. It will need to:
-* accept the connection
+* Accept the connection
 * Create a new connection for each client
 * Listen for incoming messages and broadcast them to clients
 * Listen for a client disconnecting and remove it from the client list
 
 #### Accept the Connection
 
-Upon accepting a connection request, we are given an object that represents the client’s connection. In Part 2, the client will be sending sample-protocol as the connection’s protocol string to the accept method of the request object (which we have identified as **req**):
+Upon accepting a connection request, we are given an object that represents the client’s connection. In Part 2, the client will be sending *sample-protocol* as the connection’s protocol string to the accept method of the request object (which we have identified as **req**):
 
 ```javascript
 let connection = req.accept('sample-protocol', req.origin);
@@ -147,7 +147,7 @@ This next line of code is an optional logging message that shows that the server
 console.log((new Date()) + ' Connection accepted [' + id + ']');
 ```
 
-#### Listen for incoming messages and broadcast
+#### Listen for Incoming Messages and Broadcast
 
 Now we can attach event listeners to the connection. First, let’s add one that listens for messages sent from the connected clients. Within this, we want to take the message that they have sent to the server and send it out to every other client that is connected. This is very simple but it will also echo the message back to the originating client. In Part 3, we’ll add code that will suppress this behavior.
 
@@ -159,9 +159,9 @@ connection.on('message', function(message) {
 
   // Loop through all clients
   for(let id in clients){
-      // Send a message to the client with the message
-      clients[id].sendUTF(msgString);
-    }
+    // Send a message to the client with the message
+    clients[id].sendUTF(msgString);
+  }
 });
 ```
 
@@ -202,7 +202,7 @@ let wsServer = new WebSocketServer({
 let clients = {};
 let count = 0;
 
-// listens for connection requests and stores the client info
+// Listens for connection requests and stores the client info
 wsServer.on('request', function(req) {
   let connection = req.accept('sample-protocol', req.origin);
   let id = count++;
@@ -211,7 +211,7 @@ wsServer.on('request', function(req) {
 
   console.log((new Date()) + ' Connection accepted [' + id + ']');
 
-  // listens for incoming messages and broadcasts them to all clients
+  // Listens for incoming messages and broadcasts them to all clients
   connection.on('message', function(message) {
     let msgString = message.utf8Data;
 
@@ -220,7 +220,7 @@ wsServer.on('request', function(req) {
     }
   });
 
-  // listens for close requests
+  // Listens for close requests
   connection.on('close', function(reasonCode, description) {
     delete clients[id];
     console.log((new Date()) + ' Peer' + connection.remoteAddress +
@@ -367,7 +367,7 @@ document.querySelector('#message-area').addEventListener('keypress', function (e
   }
 });
 
-// sends message to server
+// Sends message to server
 function sendMessage() {
   let message = messageField.value;
 
@@ -389,7 +389,7 @@ In Part 3, we will update the code to send JSON strings that contain additional 
 
 To receive messages from the server, we need to use the `onmessage()` method of our WebSocket instance. The method will fire a **message** event when a message is received. This event has a property called `data` that we can use to access the contents of the message.
 
-Create an event listener that will fire upon receipt of a message. The code should also retrieve the message and display it in the **messageList**.
+Create an event listener that will fire upon receipt of a message. The code will also retrieve the message and display it in the **messageList**.
 
 Type the below code inside of `window.onload()`:
 
@@ -441,7 +441,7 @@ socket.onclose = function(event) {
 };
 ```
 
-And we’re done! At least for now. Spend a few minutes test driving your work.
+And we’re done! At least for now. Spend a few minutes test driving your work (if something isn't working, there's a code check at the bottom of this section before part 3).
 
 Start your server at the command line by typing `nodemon server.js` from within your project directory. Next, open the **index.html** file in two different browser windows or even two different browsers and send messages between them.
 
@@ -463,7 +463,7 @@ First, add the below line inside the `<head>` section just below the `<title>` t
 ```html
 <link rel='stylesheet' href='style.css'>
 ```
-Next, create a directory **css** and copy and paste the following into a **style.css** file in the new directory:
+Next, copy and paste the following into a **style.css** file in your project directory:
 ```css
 *, *:before, *:after {
   -webkit-box-sizing: border-box;
@@ -666,7 +666,7 @@ window.onload = function() {
   });
 
   // ==============================================================================
-  // sends message to server
+  // Sends message to server
   function sendMessage() {
     let message = messageField.value;
 
@@ -716,7 +716,7 @@ function S4() {
 }
 
 //==============================================================================
-// construct clientID object
+// Construct clientID object
 function createIdObj(id) {
   let initMsg = {
     type: 'id',
@@ -790,7 +790,7 @@ let wsServer = new WebSocketServer({
 
 let clients = {};
 
-// listens for connection requests, stores the client info, and sends it to client
+// Listens for connection requests, stores the client info, and sends it to client
 wsServer.on('request', function(req) {
   let connection = req.accept('sample-protocol', req.origin);
   let id = createUUID();
@@ -803,14 +803,14 @@ wsServer.on('request', function(req) {
 
   console.log((new Date()) + ' Connection accepted [' + id + ']');
 
-  // listens for incoming messages and broadcasts them to all other clients
+  // Listens for incoming messages and broadcasts them to all other clients
   connection.on('message', function(message) {
     let msgString = message.utf8Data;
     let msgObj = JSON.parse(msgString);
 
     let receivedId = msgObj.clientKey;
 
-    // clear client ID from message before broadcasting to other clients
+    // Clear client ID from message before broadcasting to other clients
     msgObj.clientKey = '';
 
     msgString = JSON.stringify(msgObj);
@@ -822,7 +822,7 @@ wsServer.on('request', function(req) {
     }
   });
 
-  // listens for close requests
+  // Listens for close requests
   connection.on('close', function(reasonCode, description) {
     delete clients[id];
 
@@ -842,7 +842,7 @@ function S4() {
 }
 
 // =============================================================================
-// construct clientID object
+// Construct clientID object
 function createIdObj(id) {
   let initMsg = {
     type: 'id',
@@ -892,7 +892,7 @@ let msg = JSON.parse(event.data);
 let time = new Date(msg.date);
 let timeStr = time.toLocaleTimeString();
 
-// switch statement to easily add additional functions based on message type
+// Switch statement to easily add additional functions based on message type
 switch(msg.type) {
   case 'id':
     clientKey = msg.clientKey;
@@ -914,7 +914,7 @@ socket.send(JSON.stringify(msg));
 And finally, at the very end of the file, add these functions, which create the message object that will be sent to the server as well as the message ID:
 ```javascript
 //=============================================================================
-// construct message object
+// Construct message object
 function createMsgObj(message, clientKey) {
   let msg = {
     type: 'message',
@@ -927,7 +927,7 @@ function createMsgObj(message, clientKey) {
 }
 
 //=============================================================================
-// use closure to create and increment counter for message ID
+// Use closure to create and increment counter for message ID
 var createMsgId = (function() {
   var counter = 0;
   return function() {
@@ -972,7 +972,7 @@ window.onload = function() {
     let time = new Date(msg.date);
     let timeStr = time.toLocaleTimeString();
 
-    // switch statement to easily add additional functions based on message type
+    // Switch statement to easily add additional functions based on message type
     switch(msg.type) {
       case 'id':
         clientKey = msg.clientKey;
@@ -1028,7 +1028,7 @@ window.onload = function() {
   });
 
   // =============================================================================
-  // sends message to server
+  // Sends message to server
   function sendMessage() {
     let message = messageField.value;
 
@@ -1049,7 +1049,7 @@ window.onload = function() {
 };
 
 // =============================================================================
-// construct message object
+// Construct message object
 function createMsgObj(message, clientKey) {
   let msg = {
     type: 'message',
@@ -1063,7 +1063,7 @@ function createMsgObj(message, clientKey) {
 }
 
 // =============================================================================
-// use closure to create and increment counter for message ID
+// Use closure to create and increment counter for message ID
 var createMsgId = (function() {
   var counter = 0;
   return function() {
