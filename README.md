@@ -22,7 +22,7 @@ Install two npm packages from the command line:
 * `npm install websocket`
 * `npm install nodemon`
 
-**websocket** is a client and server library implementing the WebSocket protocol specified in RFC 6455. We'll only be using the server class.
+**websocket** is a client and server library implementing WebSocket protocols 8 and 13 for Node. We'll only be using the server class.
 
 **nodemon** is a package that will automate restarting your server after each edit and save. If you haven't used it before, you'll appreciate it!
 
