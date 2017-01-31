@@ -22,7 +22,9 @@ Install two npm packages from the command line:
 * `npm install websocket`
 * `npm install nodemon`
 
-Nodemon is a package that will automate restarting your server after each edit. If you haven't used it before, you'll appreciate it!
+**websocket** is a client and server library implementing the WebSocket protocol specified in RFC 6455. We'll only be using the server class.
+
+**nodemon** is a package that will automate restarting your server after each edit and save. If you haven't used it before, you'll appreciate it!
 
 ## Technology
 
