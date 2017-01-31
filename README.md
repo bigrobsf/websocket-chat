@@ -19,8 +19,8 @@ You'll need:
 
 Install two npm packages from the command line:
 
-* npm install websocket
-* npm install nodemon
+* `npm install websocket`
+* `npm install nodemon`
 
 Nodemon is a package that will automate restarting your server after each edit. If you haven't used it before, you'll appreciate it!
 
@@ -77,8 +77,7 @@ server.listen(PORT, function() {
 });
 ```
 
-We pass in the PORT variable here as the first parameter. It is the port that we want to listen to. The second parameter is a callback function that in this case simply outputs a message output to let us know that the server is running.
-Type `nodemon server.js` at the command line and you should see something like this:
+We pass in the PORT variable here as the first parameter. It is the port that we want to listen to. The second parameter is a callback function that in this case simply outputs a message to let us know that the server is running. Type `nodemon server.js` at the command line and you should see something like this:
 
 `Mon Jan 16 2017 15:27:42 GMT-0800 (PST) Server is listening on port 3001`
 
@@ -117,7 +116,7 @@ This is the code that will be placed within function `wsServer.on()`. It will ne
 
 #### Accept the Connection
 
-Upon accepting a connection request, we are given an object that represents the client’s connection. In Part 2, the client will be sending *sample-protocol* as the connection’s protocol string to the accept method of the request object (which we have identified as **req**):
+Upon accepting a connection request, we are given an object that represents the client’s connection. In Part 2, the client will be sending *sample-protocol* as the connection’s protocol string to the accept method of the request object (which we have identified below as **req**):
 
 ```javascript
 let connection = req.accept('sample-protocol', req.origin);
@@ -127,7 +126,7 @@ The server will use this connection to send messages to the client.
 
 #### Store Connected Clients
 
-Let’s create an object that will track clients as well as a variable we can increment to identify each client. Type these before the `wsServer.on()` event listener:
+Let’s create an object that will track clients as well as a variable we can increment to identify each client. Type these two lines before the `wsServer.on()` event listener:
 
 ```javascript
 let count = 0;
@@ -159,7 +158,7 @@ connection.on('message', function(message) {
 
   // Loop through all clients
   for(let id in clients){
-    // Send a message to the client with the message
+    // Send the message to all clients
     clients[id].sendUTF(msgString);
   }
 });
@@ -245,33 +244,33 @@ The client-side has a few ingredients in addition to JavaScript. We need to have
 Copy and paste the below into an **index.html** file in the same directory as your **server.js** file:
 ```html
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
-  <meta charset='UTF-8'>
-  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-  <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Hit Me Up</title>
 </head>
 <body>
-  <div id='wrapper'>
+  <div id="wrapper">
     <h1>Hit Me Up</h1>
 
-    <div id='status'>Connecting...</div>
+    <div id="status">Connecting...</div>
 
-    <ul id='message-log'></ul>
+    <ul id="message-log"></ul>
 
-    <div id='message-form'>
-      <textarea id='message-area' placeholder='Write your message here...' autofocus='true' required>
+    <div id="message-form">
+      <textarea id="message-area" placeholder="Type your message here..." autofocus="true" required>
       </textarea>
-      <button type='button' class='send' id='send'>Send</button>
-      <div id='connect-action'>
-        <button type='button' class='connect' id='open'>Connect</button>
-        <button type='button' class='disconnect' id='close'>Disconnect</button>
+      <button type="button" class="send" id="send">Send</button>
+      <div id="connect-action">
+        <button type="button" class="connect" id="open">Connect</button>
+        <button type="button" class="disconnect" id="close">Disconnect</button>
       </div>
     </div>
   </div>
 
-  <script src='client.js'></script>
+  <script src="client.js"></script>
 </body>
 </html>
 ```
@@ -316,7 +315,7 @@ Add the below code just before `window.onload()`:
 let socket = new WebSocket('ws://localhost:3001', 'sample-protocol');
 ```
 
-The following event listener isn’t required but will update the connection status `div` to let the user know that a connection has been made with the server. The code also adds the class open to the status `<div>` solely for styling purposes. Add the below to your **client.js** file inside of `window.onload()`:
+The following event listener isn’t required but will update the connection status `div` to let the user know that a connection has been made with the server. The code also adds the class "open" to the status `<div>` solely for styling purposes. Add the below to your **client.js** file inside of `window.onload()`:
 
 ```javascript
 // Set connection status on form to Connected
@@ -389,7 +388,7 @@ In Part 3, we will update the code to send JSON strings that contain additional 
 
 To receive messages from the server, we need to use the `onmessage()` method of our WebSocket instance. The method will fire a **message** event when a message is received. This event has a property called `data` that we can use to access the contents of the message.
 
-Create an event listener that will fire upon receipt of a message. The code will also retrieve the message and display it in the **messageList**.
+Create an event listener that will fire upon receipt of a message. This code will also retrieve the message and display it in the **messageList**.
 
 Type the below code inside of `window.onload()`:
 
@@ -419,7 +418,7 @@ The client closes the WebSocket connection using the `close()` method.
 socket.close();
 ```
 
-Let’s create an event listener that fires when the user clicks the **Disconnect** button. This will call the `close()` method of our WebSocket instance.
+Now let’s create an event listener that fires when the user clicks the **Disconnect** button. This will call the `close()` method of our WebSocket instance.
 
 ```javascript
 // Closes the connection when the Disconnect button is clicked
@@ -441,7 +440,7 @@ socket.onclose = function(event) {
 };
 ```
 
-And we’re done! At least for now. Spend a few minutes test driving your work (if something isn't working, there's a code check at the bottom of this section before part 3).
+And we’re done! At least for now. Spend a few minutes test driving your work (if something isn't working, there's a code check at the bottom of each section).
 
 Start your server at the command line by typing `nodemon server.js` from within your project directory. Next, open the **index.html** file in two different browser windows or even two different browsers and send messages between them.
 
@@ -687,7 +686,7 @@ window.onload = function() {
 
 ## Part 3 – Suppressing the Echo
 
-Now let’s add some features that will turn this into a messaging app that is usable if rather barebones. We’ll be making changes on both the server and client-side. First, we’ll have the server generate a unique ID for each client, which it will then send to the client for it to store for the duration of the session.
+Now let’s add some features that will turn this into a messaging app that is more usable if rather barebones. We’ll be making changes on both the server and client-side. First, we’ll have the server generate a unique ID for each client, which it will then send to the client for it to store for the duration of the session.
 
 Next, we’ll store the message string in a JSON object that will contain additional information such as the message type, the aforementioned client identifier, and a timestamp. Instead of passing a text string back and forth, we’ll be sending a "stringified" JSON object.
 
@@ -768,7 +767,7 @@ if (id !== receivedId) {
 }
 ```
 
-The **if** statement simply tells the server to not send the message to the client that originated by comparing that client’s ID to the ID received in the message object.
+The **if** statement simply tells the server to send the message to all clients *except* the client that originated by comparing that client’s ID to the ID received in the message object.
 
 ### Code Check
 
@@ -862,7 +861,7 @@ server.listen(PORT, function() {
 
 ## The Client
 
-First, return to the **client.js** file and from within `socket.onmessage`, **delete**:
+First, return to your **client.js** file and from within `socket.onmessage`, **delete**:
 
 ```
 let message = event.data;
@@ -870,7 +869,7 @@ let message = event.data;
 messageList.innerHTML += '<li class="received"><span>Received: </span>' + message + '</li>';
 ```
 
-and from within `sendMessage()`, remove:
+and from within `sendMessage()`, **remove**:
 
 `socket.send(message);`
 
@@ -903,6 +902,7 @@ switch(msg.type) {
     break;
 }
 ```
+The above displays a timestamp along with our received messages.
 
 Next, within `sendMessage()` and at the beginning of the code within the **if** statement, add:
 
@@ -910,8 +910,9 @@ Next, within `sendMessage()` and at the beginning of the code within the **if** 
 let msg = createMsgObj(message, clientKey);
 socket.send(JSON.stringify(msg));
 ```
+This code calls a function that we will add next, which creates the message object and then sends it to the server as JSON.
 
-And finally, at the very end of the file, add these functions, which create the message object that will be sent to the server as well as the message ID:
+Finally, at the very end of the file, add these functions, which create the message object that will be sent to the server as well as the message ID:
 ```javascript
 //=============================================================================
 // Construct message object
@@ -1077,7 +1078,7 @@ var createMsgId = (function() {
 
 ### Use-Cases
 
-WebSockets provide a true bi-directional (or full-duplex) connectivity between a server and one or more clients. The technology greatly reduces the load on servers by eliminating the need for long-polling and HTTP header exchange.
+WebSockets provide true bi-directional (or full-duplex) connectivity between a server and one or more clients. The technology greatly reduces the load on servers by eliminating the need for long-polling and HTTP header exchange.
 
 We’ve demonstrated that we can use WebSockets to build a working messaging application, but what are some other use-cases for WebSockets? Does an app:
 
