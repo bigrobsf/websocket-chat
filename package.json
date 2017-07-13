@@ -16,7 +16,7 @@
     "url": "https://github.com/bigrobsf/websocket-chat/issues"
   },
   "engines": {
-    "node": "6.8.1"
+    "node": "6.11.1"
   },
   "homepage": "https://github.com/bigrobsf/websocket-chat#readme",
   "dependencies": {
